@@ -1,0 +1,3 @@
+rootProject.name = "QuickTreeView"
+include ':app'
+include ':treeviewlibrary'
