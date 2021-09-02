@@ -19,7 +19,7 @@ public class TreeHelper {
      */
     public static List<Node> getSortedNodes(List<Node> datas,
                                                                     int defaultExpandLevel) {
-        List<Node> result = new ArrayList<Node>();
+        List<Node> result = new ArrayList<>();
         // 设置Node间父子关系
         List<Node> nodes = convetData2Node(datas);
         // 拿到根节点
@@ -38,8 +38,7 @@ public class TreeHelper {
      * @return
      */
     public static List<Node> filterVisibleNode(List<Node> nodes) {
-        List<Node> result = new ArrayList<Node>();
-
+        List<Node> result = new ArrayList<>();
         for (Node node : nodes) {
             // 如果为跟节点，或者上层目录为展开状态
             if (node.isRoot() || node.isParentExpand()) {
@@ -82,7 +81,7 @@ public class TreeHelper {
     }
 
     private static List<Node> getRootNodes(List<Node> nodes) {
-        List<Node> root = new ArrayList<Node>();
+        List<Node> root = new ArrayList<>();
         for (Node node : nodes) {
             if (node.isRoot())
                 root.add(node);

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 
@@ -60,30 +59,17 @@ public abstract class TreeListViewAdapter extends BaseAdapter {
 
 		this.defaultExpandLevel = defaultExpandLevel;
 		mContext = context;
-		/**
-		 * 对所有的Node进行排序
-		 */
+		//对所有的Node进行排序
 		mAllNodes = TreeHelper.getSortedNodes(datas, defaultExpandLevel);
-		/**
-		 * 过滤出可见的Node
-		 */
+		//过滤出可见的Node
 		mNodes = TreeHelper.filterVisibleNode(mAllNodes);
 		mInflater = LayoutInflater.from(context);
-		/**
-		 * 设置节点点击时，可以展开以及关闭；并且将ItemClick事件继续往外公布
-		 */
-		mTree.setOnItemClickListener(new AdapterView.OnItemClickListener()
-		{
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-									int position, long id)
-			{
-				expandOrCollapse(position);
-
-				if (onTreeNodeClickListener != null) {
-					onTreeNodeClickListener.onClick(mNodes.get(position),
-							position);
-				}
+		// 设置节点点击时，可以展开以及关闭；并且将ItemClick事件继续往外公布
+		mTree.setOnItemClickListener((parent, view, position, id) -> {
+			expandOrCollapse(position);
+			if (onTreeNodeClickListener != null) {
+				onTreeNodeClickListener.onClick(mNodes.get(position),
+						position);
 			}
 		});
 	}
@@ -243,13 +229,9 @@ public abstract class TreeListViewAdapter extends BaseAdapter {
 		}else {
 			mAllNodes.addAll(mListNodes);
 		}
-		/**
-		 * 对所有的Node进行排序
-		 */
+		// 对所有的Node进行排序
 		mAllNodes = TreeHelper.getSortedNodes(mAllNodes, defaultExpandLevel);
-		/**
-		 * 过滤出可见的Node
-		 */
+		// 过滤出可见的Node
 		mNodes = TreeHelper.filterVisibleNode(mAllNodes);
 		//刷新数据
 		notifyDataSetChanged();
@@ -261,7 +243,7 @@ public abstract class TreeListViewAdapter extends BaseAdapter {
 	 */
 	public List<Node> getAllNodes(){
 		if(mAllNodes == null)
-			mAllNodes = new ArrayList<Node>();
+			mAllNodes = new ArrayList<>();
 		return mAllNodes;
 	}
 
@@ -348,6 +330,7 @@ public abstract class TreeListViewAdapter extends BaseAdapter {
 			for (Node children : childrens) {
 				if(children.isChecked()){
 					isChecked = true;
+					break;
 				}
 			}
 			//如果所有自节点都没有被选中 父节点也不选中

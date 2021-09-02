@@ -2,7 +2,6 @@ package cn.demomaster.treeviewlibrary;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,13 +55,9 @@ public abstract class TreeRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
         }
         this.defaultExpandLevel = defaultExpandLevel;
         mContext = context;
-        /**
-         * 对所有的Node进行排序
-         */
+        //对所有的Node进行排序
         mAllNodes = TreeHelper.getSortedNodes(datas, defaultExpandLevel);
-        /**
-         * 过滤出可见的Node
-         */
+        // 过滤出可见的Node
         mNodes = TreeHelper.filterVisibleNode(mAllNodes);
         mInflater = LayoutInflater.from(context);
     }
@@ -87,17 +82,12 @@ public abstract class TreeRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
         // 设置内边距
         holder.itemView.setPadding(node.getLevel() * 30, 3, 3, 3);
-        /**
-         * 设置节点点击时，可以展开以及关闭,将事件继续往外公布
-         */
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                expandOrCollapse(position);
-                if (onTreeNodeClickListener != null) {
-                    onTreeNodeClickListener.onClick(mNodes.get(position),
-                            position);
-                }
+        // 设置节点点击时，可以展开以及关闭,将事件继续往外公布
+        holder.itemView.setOnClickListener(v -> {
+            expandOrCollapse(position);
+            if (onTreeNodeClickListener != null) {
+                onTreeNodeClickListener.onClick(mNodes.get(position),
+                        position);
             }
         });
         onBindViewHolder(node,holder,position);
@@ -249,13 +239,9 @@ public abstract class TreeRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
         }else {
             mAllNodes.addAll(mListNodes);
         }
-        /**
-         * 对所有的Node进行排序
-         */
+        //对所有的Node进行排序
         mAllNodes = TreeHelper.getSortedNodes(mAllNodes, defaultExpandLevel);
-        /**
-         * 过滤出可见的Node
-         */
+        //过滤出可见的Node
         mNodes = TreeHelper.filterVisibleNode(mAllNodes);
         //刷新数据
         notifyDataSetChanged();
@@ -267,7 +253,7 @@ public abstract class TreeRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
      */
     public List<Node> getAllNodes(){
         if(mAllNodes == null)
-            mAllNodes = new ArrayList<Node>();
+            mAllNodes = new ArrayList<>();
         return mAllNodes;
     }
 
@@ -319,22 +305,22 @@ public abstract class TreeRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     private void setNodeParentChecked(Node node, boolean checked){
         if(checked){
             node.setChecked(checked);
-            if(node.getParent()!=null)
-                setNodeParentChecked(node.getParent(), checked);
         }else{
             List<Node> childrens = node.getChildren();
             boolean isChecked = false;
             for (Node children : childrens) {
                 if(children.isChecked()){
                     isChecked = true;
+                    break;
                 }
             }
             //如果所有自节点都没有被选中 父节点也不选中
             if(!isChecked){
                 node.setChecked(checked);
             }
-            if(node.getParent()!=null)
-                setNodeParentChecked(node.getParent(), checked);
+        }
+        if(node.getParent()!=null){
+            setNodeParentChecked(node.getParent(), checked);
         }
     }
 
